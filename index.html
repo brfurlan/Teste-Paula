@@ -149,8 +149,8 @@
       editRow = $(ctl).parents("tr");
       var cols = editRow.children("td");
       $("#productname").val($(cols[1]).text());
-      $("#hora_inicio").val($(cols[2]).time());
-      $("#hora_fim").val($(cols[3]).time());
+      $("#hora_inicio").val($(cols[2]).text());
+      $("#hora_fim").val($(cols[3]).text());
       $("#descricao").val($(cols[4]).text());
       $("foto_ponto").val($(cols[5]).text());
 
