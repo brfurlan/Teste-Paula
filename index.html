@@ -121,13 +121,13 @@
                   <button type="button" id="updateButton"
                     class="btn btn-primary"
                     onclick="doit('biff8', 'Formulário_Tabela.xls');">
-                    Exportar para .XLS
+                    .XLS
                   </button>
               </div>
               <div class="col-xs-3">
                 <button type="button" id="exportar"
                       class="btn btn-primary" onclick="exportData()">
-                      Exportar para .CSV
+                      .CSV
                 </button>
               </div>
             </div>
@@ -309,13 +309,12 @@
     for(var i=0,row; row = table.rows[i];i++){
         //rows would be accessed using the "row" variable assigned in the for loop
         //Get each cell value/column from the row
-        //column1 = row.cells[0].innerText;
         column1 = row.cells[1].innerText;
         column2 = row.cells[2].innerText;
         column3 = row.cells[3].innerText;
         column4 = row.cells[4].innerText;
         column5 = row.cells[5].innerText;
-        column6 = row.cells[6].innerText;
+        
 
  
     /* add a new records in the array */
@@ -326,7 +325,6 @@
                 column3,
                 column4,
                 column5,
-                column6
             ]
         );
  
