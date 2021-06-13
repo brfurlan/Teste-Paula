@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Formulário para inserir os pontos</title>
+    <title>Inserir/editar na tabela</title>
     <link href="Content/bootstrap.css" rel="stylesheet" />
     
     <script src="Scripts/jquery-1.11.0.min.js"></script>
@@ -11,7 +11,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8">"
-        <h2>Tabela para inserção de Dados</h2>
+        <h2>Editando Tabela</h2>
       </div>
     </div>
     <div class="row">
@@ -22,25 +22,27 @@
           <thead>
             <tr>
               <th>Editar</th>
-              <th>Nnome do Ponto</th>
-              <th>Hora Início</th>
-              <th>Hora Fim</th>
+              <th>Nome do Ponto</th>
+              <th>Início</th>
+              <th>Fim</th>
               <th>Descrição</th>
-              <th>Nome Foto</th>
+              <th>Foto</th>
               <th>Deletar</th>
             </tr>
             <tr>
               <td>
-                <button type="button" onclick="productDisplay(this);" 
-                class="btn btn-default">
-                <span class="glyphicon glyphicon-edit"></span>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
                 </button>
               </td>
-              <td>*</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>Adicionar Nome do Ponto</td>
+              <td>00:00</td>
+              <td>00:00</td>
+              <td>Descrição durante a medição</td>
+              <td>Exemplo.jpg</td>
+              <td>   </td>
             </tr>
           </table>
         </div>
@@ -51,7 +53,7 @@
       <div class="col-sm-8">
         <div class="panel panel-primary">
           <div class="panel-heading">
-            Formulário para Inserir Dados
+            Formulário para Inserir Dados dos pontos
           </div>
           <div class="panel-body">
             <div class="form-group">
@@ -64,22 +66,22 @@
                      id="productname" />
             </div>
             <div class="form-group">
-              <label for="hora_inicio">
-                Hora Início
-              </label>
-              <input type="time"
-                    class="form-control"
-                     value=00:00
-                     id="hora_inicio" />
-            </div>
-            <div class="form-group">
-              <label for="hora_fim">
-                Hora Fim
+              <label for="inicio">
+                Início
               </label>
               <input type="time"
                      class="form-control"
                      value=00:00
-                     id="hora_fim" />
+                     id="inicio" />
+            </div>
+            <div class="form-group">
+              <label for="fim">
+                Fim
+              </label>
+              <input type="time"
+                     class="form-control"
+                     value=00:00
+                     id="fim" />
             </div>
             <div class="form-group">
               <label for="descricao">
@@ -87,17 +89,17 @@
               </label>
               <input type="text"
                      class="form-control"
-                     value="Insira a descrição do Ponto"
+                     value="Descrição durante a medição"
                      id="descricao" />
             </div>
             <div class="form-group">
-              <label for="foto_ponto">
-                foto 
+              <label for="foto">
+                Foto 
               </label>
               <input type="text"
                      class="form-control"
-                    value="exemplo.jpg"
-                     id="foto_ponto" />
+                     value="exemplo.jpg"
+                     id="foto" />
             </div>
             <br>
             <div id="xport">
@@ -118,7 +120,7 @@
               <div class="col-xs-3">
                   <button type="button" id="updateButton"
                     class="btn btn-primary"
-                    onclick="doit('biff8', 'SheetJSTableExport.xls');">
+                    onclick="doit('biff8', 'Formulário_Tabela.xls');">
                     Exportar para .XLS
                   </button>
               </div>
@@ -148,12 +150,12 @@
     function productDisplay(ctl) {
       editRow = $(ctl).parents("tr");
       var cols = editRow.children("td");
-      $("#productname").val($(cols[1]).text());
-      $("#hora_inicio").val($(cols[2]).text());
-      $("#hora_fim").val($(cols[3]).text());
-      $("#descricao").val($(cols[4]).text());
-      $("foto_ponto").val($(cols[5]).text());
 
+      $("#productname").val($(cols[1]).text());
+      $("#inicio").val($(cols[2]).text());
+      $("#fim").val($(cols[3]).text());
+      $("#descricao").val($(cols[4]).text());
+      $("#foto").val($(cols[5]).text());
 
       // Change Update Button Text
       $("#updateButton").text("Atualizar");
@@ -213,10 +215,10 @@
           "</button>" +
         "</td>" +
         "<td>" + $("#productname").val() + "</td>" +
-        "<td>" + $("#hora_inicio").val() + "</td>" +
-        "<td>" + $("#hora_fim").val() + "</td>" +
+        "<td>" + $("#inicio").val() + "</td>" +
+        "<td>" + $("#fim").val() + "</td>" +
         "<td>" + $("#descricao").val() + "</td>" +
-        "<td>" + $("#foto_ponto").val() + "</td>" +
+        "<td>" + $("#foto").val() + "</td>" +
         "<td>" +
           "<button type='button' " +
                   "onclick='productDelete(this);' " +
@@ -237,10 +239,10 @@
     // Clear form fields
     function formClear() {
       $("#productname").val("Adicionar Nome do Ponto");
-      $("#hora_inicio").val("00:00");
-      $("#hora_fim").val("00:00");
-      $("#descricao").val("Lorim Ipsum");
-      $("#foto_ponto").val("exemplo.jpg");
+      $("#inicio").val("00:00");
+      $("#fim").val("00:00");
+      $("#descricao").val("Descrição do ponto");
+      $("#foto").val("Exemplo.jpg");
     }
 
 
