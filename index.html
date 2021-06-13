@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Formulário para inserir os pontos</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    
+    <script src="Scripts/jquery-1.11.0.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+  </head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">"
+        <h2>Editando Tabela</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <div id= "novaTabela">
+          <table id="productTable"
+          class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Editar</th>
+              <th>Nnome do Ponto</th>
+              <th>Hora Início</th>
+              <th>Hora Fim</th>
+              <th>Descrição</th>
+              <th>Nome Foto</th>
+              <th>Deletar</th>
+            </tr>
+            <tr>
+              <td>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
+                </button>
+              </td>
+              <th> Inserir Nome Ponto </th>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            Formulário para Inserir Dados
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="productname">
+                Nome do Ponto
+              </label>
+              <input type="text"
+                     class="form-control"
+                     value="Adicionar Estabelecimento"
+                     id="productname" />
+            </div>
+            <div class="form-group">
+              <label for="hora_inicio">
+                Hora Início
+              </label>
+              <input type="time"
+                    class="form-control"
+                     value=0
+                     id="hora_inicio" />
+            </div>
+            <div class="form-group">
+              <label for="hora_fim">
+                Hora Fim
+              </label>
+              <input type="time"
+                     class="form-control"
+                     value=0
+                     id="hora_fim" />
+            </div>
+            <div class="form-group">
+              <label for="descricao">
+                Descrição
+              </label>
+              <input type="text"
+                     class="form-control"
+                     value=0
+                     id="descricao" />
+            </div>
+            <div class="form-group">
+              <label for="foto_ponto">
+                foto 
+              </label>
+              <input type="text"
+                     class="form-control"
+                     value=0
+                     id="foto_ponto" />
+            </div>
+            <br>
+            <div id="xport">
+              <div class="col-xs-3">
+                <button type="button" id="updateButton"
+                        class="btn btn-primary"
+                        onclick="productUpdate();">
+                  Adicionar
+                </button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" id="updateButton"
+                        class="btn btn-primary"
+                        onclick="finalizar();">
+                  Finalizar
+                </button>
+              </div>
+              <div class="col-xs-3">
+                  <button type="button" id="updateButton"
+                    class="btn btn-primary"
+                    onclick="doit('biff8', 'SheetJSTableExport.xls');">
+                    Exportar para .XLS
+                  </button>
+              </div>
+              <div class="col-xs-3">
+                <button type="button" id="exportar"
+                      class="btn btn-primary" onclick="exportData()">
+                      Exportar para .CSV
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.0/xlsx.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+  <script>
+
+    // Current product being edited
+    var editRow = null;
+
+    function productDisplay(ctl) {
+      editRow = $(ctl).parents("tr");
+      var cols = editRow.children("td");
+
+      $("#productname").val($(cols[1]).text());
+      $("#hora_inicio").val($(cols[2]).text());
+      $("#hora_fim").val($(cols[3]).text());
+      $("#descricao").val($(cols[4]).text());
+      $("foto_ponto").val($(cols[5]).text());
+
+
+      // Change Update Button Text
+      $("#updateButton").text("Atualizar");
+    }
+
+    function productUpdate() {
+      if ($("#updateButton").text() == "Atualizar") {
+        productUpdateInTable();
+      }
+      else {
+        productAddToTable();
+      }
+
+      // Clear form fields
+      formClear();
+
+      // Focus to product name field
+      $("#productname").focus();
+    }
+
+    // Add product to <table>
+    function productAddToTable() {
+      // First check if a <tbody> tag exists, add one if not
+      if ($("#productTable tbody").length == 0) {
+        $("#productTable").append("<tbody></tbody>");
+      }
+
+      // Append product to table
+      $("#productTable tbody").append(
+        productBuildTableRow());
+    }
+
+    // Update product in <table>
+    function productUpdateInTable() {
+      // Add changed product to table
+      $(editRow).after(productBuildTableRow());
+
+      // Remove original product
+      $(editRow).remove();
+
+      // Clear form fields
+      formClear();
+
+      // Change Update Button Text
+      $("#updateButton").text("Adicionar");
+    }
+
+    // Build a <table> row of Product data
+    function productBuildTableRow() {
+      var ret =
+      "<tr>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDisplay(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-edit' />" +
+          "</button>" +
+        "</td>" +
+        "<td>" + $("#productname").val() + "</td>" +
+        "<td>" + $("#hora_inicio").val() + "</td>" +
+        "<td>" + $("#hora_fim").val() + "</td>" +
+        "<td>" + $("#descricao").val() + "</td>" +
+        "<td>" + $("#foto_ponto").val() + "</td>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDelete(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-remove' />" +
+          "</button>" +
+        "</td>" +
+      "</tr>"
+
+      return ret;
+    }
+
+    // Delete product from <table>
+    function productDelete(ctl) {
+      $(ctl).parents("tr").remove();
+    }
+
+    // Clear form fields
+    function formClear() {
+      $("#productname").val("Adicionar Nome do Ponto");
+      $("#hora_inicio").val("00:00");
+      $("#hora_fim").val("00:00");
+      $("#descricao").val("Lorim Ipsum");
+      $("#foto_ponto").val("exemplo.jpg");
+    }
+
+
+
+    function finalizar(){
+
+      var tabi = document.getElementById('productTable');
+      var row = tabi.rows;
+      var k = 6;
+      var i = 0;
+
+      for (var j = 0; j < row.length; j++) {
+          // Deleting the ith cell of each row.
+          row[j].deleteCell(i);
+      }
+
+      for (var j = 0; j < row.length; j++) {
+        // Deleting the ith cell of each row.
+        row[j].deleteCell(k);
+      }
+
+    }
+    function doit(type, fn, dl) {
+      var elt = document.getElementById('productTable');
+      var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+      return dl ?
+        XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :
+        XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));
+    }  
+      function tableau(pid, iid, fmt, ofile) {
+        
+        
+        if(typeof Downloadify !== 'undefined') Downloadify.create(pid,{
+            swf: 'downloadify.swf',
+            downloadImage: 'download.png',
+            width: 100,
+            height: 30,
+            filename: ofile, data: function() { return doit(fmt, ofile, true); },
+            transparent: false,
+            append: false,
+            dataType: 'base64',
+            onComplete: function(){ alert('Your File Has Been Saved!'); },
+            onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+            onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); }
+        });
+      }
+      tableau('biff8btn', 'xportbiff8', 'biff8', 'SheetJSTableExport.xls');
+
+
+
+
+
+
+
+
+    function exportData(){
+    /* Get the HTML data using Element by Id */
+    var table = document.getElementById("productTable");
+ 
+    /* Declaring array variable */
+    var rows =[];
+ 
+      //iterate through rows of table
+    for(var i=0,row; row = table.rows[i];i++){
+        //rows would be accessed using the "row" variable assigned in the for loop
+        //Get each cell value/column from the row
+        //column1 = row.cells[0].innerText;
+        column1 = row.cells[1].innerText;
+        column2 = row.cells[2].innerText;
+        column3 = row.cells[3].innerText;
+        column4 = row.cells[4].innerText;
+        column5 = row.cells[5].innerText;
+        column6 = row.cells[6].innerText;
+
+ 
+    /* add a new records in the array */
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6
+            ]
+        );
+ 
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+ 
+        /* create a hidden <a> DOM node and set its download attribute */
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Formulario_Tabela.csv");
+        document.body.appendChild(link);
+         /* download the data file named "Stock_Price_Report.csv" */
+        link.click();
+  } 
+  </script>
+</body>
+
+</html>
