@@ -30,10 +30,12 @@
               <th>Deletar</th>
             </tr>
             <tr>
-              <button type="button" onclick="productDisplay(this);" 
+              <td>
+                <button type="button" onclick="productDisplay(this);" 
               class="btn btn-default">
               <span class="glyphicon glyphicon-edit"></span>
             </button>
+              </td>
               <td>*</td>
               <td> </td>
               <td></td>
@@ -147,10 +149,9 @@
     function productDisplay(ctl) {
       editRow = $(ctl).parents("tr");
       var cols = editRow.children("td");
-
       $("#productname").val($(cols[1]).text());
       $("#hora_inicio").val($(cols[2]).time());
-      $("#hora_fim").val($(cols[3).time());
+      $("#hora_fim").val($(cols[3]).time());
       $("#descricao").val($(cols[4]).text());
       $("foto_ponto").val($(cols[5]).text());
 
