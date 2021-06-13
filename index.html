@@ -151,9 +151,9 @@
       editRow = $(ctl).parents("tr");
       var cols = editRow.children("td");
 
-      $("#productname").val($(cols[2]).text());
-      $("#hora_inicio").val($(cols[3]).text());
-      $("#hora_fim").val($(cols[3]).text());
+      $("#productname").val($(cols[1]).text());
+      $("#hora_inicio").val($(cols[2]).time());
+      $("#hora_fim").val($(cols[3]).time());
       $("#descricao").val($(cols[5]).text());
       $("foto_ponto").val($(cols[6]).text());
 
